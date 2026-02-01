@@ -1,0 +1,63 @@
+================================================================================
+LSTM TRADER VERSION LOG
+================================================================================
+
+--------------------------------------------------------------------------------
+VERSION: 150004 (Magic Number)
+STARTED: 2026-01-21
+--------------------------------------------------------------------------------
+Configuration:
+  - XGBoost threshold: 0.65
+  - MTF MFC features: YES (M15, M30, H1, H4)
+  - Lot size: 0.01
+  - Max positions: 15
+  - Max hold: 24 bars (2 hours)
+  - Friday cutoff: 06:00
+
+Expected Performance (2025 backtest):
+  - Trades: 2,169
+  - Win Rate: 71.6%
+  - Avg Pips: +3.5
+  - Total Pips: +7,676
+
+Changes from previous version (150003):
+  - Added MTF MFC features to XGBoost (M15, M30, H1, H4 MFC values)
+  - Retrained XGBoost with 12 new features
+  - Changed threshold from 0.75 to 0.65 for more trades
+
+Notes:
+  - Monitoring to verify if backtest WR matches live performance
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+VERSION: 150005 (Magic Number)
+STARTED: 2026-01-22
+--------------------------------------------------------------------------------
+Configuration:
+  - XGBoost threshold: 0.65
+  - MTF MFC features: YES (M15, M30, H1, H4)
+  - Lot size: 0.01
+  - Max positions: 15
+  - Max hold: 24 bars (2 hours)
+  - Friday cutoff: 06:00
+
+Expected Performance (2025 backtest):
+  - Trades: 2,169
+  - Win Rate: 70.8%
+  - Avg Pips: +3.4
+  - Total Pips: +7,302
+
+Changes from previous version (150004):
+  - RETRAINED XGBoost with consistent H4 velocity calculation
+    - Old backtest: diff(72) on M5 = inconsistent (1 or 2 H4 bars depending on time)
+    - Old live: 6 H4 bars = 24 hours (way too large!)
+    - NEW: Both use 2 H4 bars = 8 hours (consistent & predictable)
+  - Training: diff(96) on M5 index = 96 * 5min = 8 hours = 2 H4 bars
+  - Live: H4[-2] - H4[-4] = 2 H4 bars
+
+Notes:
+  - Issue found: Live entering more trades than backtest suggested
+  - Root cause: Inconsistent H4 velocity between training and live
+  - Solution: Retrained with consistent 2 H4 bar velocity
+  - Results similar to before (70.8% vs 71.6% WR)
+--------------------------------------------------------------------------------

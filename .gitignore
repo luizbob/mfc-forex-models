@@ -1,0 +1,33 @@
+# Data files (too large for git - 8GB+)
+data/
+*/data/
+
+# Logs
+logs/*.csv
+*.log
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Virtual env
+venv/
+env/
+.env
+
+# Temporary files
+*.tmp
+*.bak

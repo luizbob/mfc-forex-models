@@ -1,0 +1,47 @@
+================================================================================
+SETUP NOTES - MFC Trading System
+================================================================================
+
+CRITICAL: MFC Indicator Setup
+-----------------------------
+Before running the traders (M5, M15, M30), you MUST manually load the MFC
+indicator on each timeframe chart in MetaTrader 4:
+
+  1. Open a chart for each required timeframe: M5, M15, M30, H1, H4
+  2. Attach the MFC indicator to each chart manually
+  3. Wait for the indicator to fully initialize before starting the traders
+
+WHY: The iCustom() function reads indicator buffers. If the indicator is not
+pre-loaded on the chart, iCustom() triggers a fresh calculation which can
+return unstable/incorrect values during the calculation process. This causes
+bad data like -2.8 instead of -0.3, which corrupts model predictions.
+
+With the indicator pre-loaded, the buffers are already calculated and stable,
+giving clean reads every time.
+
+Memory Note: MT4 is 32-bit (max ~2-3GB RAM). Monitor memory usage if you have
+many charts open. 791 MB is comfortable. Reduce max bars in chart settings if
+needed (Tools > Options > Charts).
+
+--------------------------------------------------------------------------------
+
+Data Monitor
+------------
+Run monitor_mfc.py alongside the traders to catch any data anomalies:
+
+  python monitor_mfc.py
+
+This watches for:
+  - Out of range values (beyond +/- 2.5)
+  - Spikes (jumps > 0.8 between consecutive bars)
+
+--------------------------------------------------------------------------------
+
+MT5 Connection
+--------------
+MT5 order_send() can return None during broker rollover (~21:00-23:00).
+The traders have retry logic (3 attempts with 2-second delays) to handle this.
+
+================================================================================
+Last updated: 2025-01-28
+================================================================================
